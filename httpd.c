@@ -22,7 +22,7 @@
 #include <strings.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <pthread.h>
+/*#include <pthread.h> @liang20160301*/
 #include <sys/wait.h>
 #include <stdlib.h>
 
@@ -475,11 +475,11 @@ void unimplemented(int client)
 int main(void)
 {
  int server_sock = -1;
- u_short port = 0;
+ u_short port = 8888;  //@liang
  int client_sock = -1;
  struct sockaddr_in client_name;
  int client_name_len = sizeof(client_name);
- pthread_t newthread;
+ /*pthread_t newthread;  @liang*/
 
  server_sock = startup(&port);
  printf("httpd running on port %d\n", port);
@@ -491,9 +491,9 @@ int main(void)
                        &client_name_len);
   if (client_sock == -1)
    error_die("accept");
- /* accept_request(client_sock); */
- if (pthread_create(&newthread , NULL, accept_request, client_sock) != 0)
-   perror("pthread_create");
+ accept_request(client_sock);	//@liang  打开注释
+ //@liang  if (pthread_create(&newthread , NULL, accept_request, client_sock) != 0)
+  //@liang perror("pthread_create");
  }
 
  close(server_sock);
